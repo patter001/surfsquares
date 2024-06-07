@@ -1,0 +1,7 @@
+.FlexGrid { 
+    flex: "1 0 50%";
+    height: 50%;
+    width: 50%;
+    box-sizing: border-box;
+    border: 1px solid black;;
+}

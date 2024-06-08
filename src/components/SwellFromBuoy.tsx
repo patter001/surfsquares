@@ -191,8 +191,10 @@ function convertGMTToCT(gmtString) {
 function WaveInfo ({data} : {data:BouyData[]}){
 
     const requiredData: ProcessedBuoyData[] = data.slice(0, 5).map((row)=>{
+        const dateTime = ""
+        // const dateTime = convertGMTToCT(`${row.YY}-${row.MM}-${row.DD} ${row.hh}:${row.mm}:00.000`) 
         return {
-            dateTime: convertGMTToCT(`${row.YY}-${row.MM}-${row.DD} ${row.hh}:${row.mm}:00.000`),
+            dateTime: dateTime,
             sigWaveHeight: metersToFeet(Number(row.WVHT)),
             swellWaveHeight: metersToFeet(Number(row.SwH)),
             windWaveHeight: metersToFeet(Number(row.WWH)),

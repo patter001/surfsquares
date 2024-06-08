@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useEffect } from "react";
 import { WaveInfo42020 } from "./components/SwellFromBuoy"
 import { WindGaugePackery, WindGaugePortA } from "./components/WindGauge";
 import { CSSProperties } from "react";
@@ -16,8 +17,8 @@ export function TvApp() {
     const containerSytle: CSSProperties = { display: "flex", flexWrap: "wrap", height: "100%", width: "100%" };
     const packeryStyle: CSSProperties = { backgroundImage: `url(${packeryImage})`, backgroundSize: "100% 100%", backgroundRepeat: "no-repeat", backgroundPosition: "left bottom" }
     const portAStyle: CSSProperties = { backgroundImage: `url(${portAImage})`, backgroundSize: "100% 100%", backgroundRepeat: "no-repeat" };
-    const waveInfoStyle: CSSProperties = {alignContent: "center", }
-    
+    const waveInfoStyle: CSSProperties = { alignContent: "center", }
+
     return (
         <div style={containerSytle}>
             <div key="packery-wind" className={"FlexGrid"} style={packeryStyle}>
@@ -25,18 +26,15 @@ export function TvApp() {
             </div>
             <div key="porta-wind" className={"FlexGrid"} style={portAStyle}>
                 <WindGaugePortA />
-            </div>    
+            </div>
             <div key="windy"
-                className={"FlexGrid"}
-                data-windywidget="forecast"
-                data-thememode="white"
-                data-spotid="4014467"
-                data-appid="5201fb63c5989e3cda6f1eb0fdc42d8b">1
+                className={"FlexGrid"}>
+                    <WindyEmbed/>
             </div>
             {/* <div className={"FlexGrid"}>
                 <img src="https://www.ndbc.noaa.gov//spec_plot.php?station=42020"/>
             </div> */}
-            <div key="waves" className={"FlexGrid"} style={waveInfoStyle}><WaveInfo42020/></div>
+            <div key="waves" className={"FlexGrid"} style={waveInfoStyle}><WaveInfo42020 /></div>
             {/* <div
                 className={"FlexGrid"}
                 data-windywidget="map"
@@ -48,6 +46,32 @@ export function TvApp() {
     )
 }
 
+const useScript = url => {
+    useEffect(() => {
+        const script = document.createElement('script');
+
+        script.src = url;
+        script.async = true;
+
+        document.body.appendChild(script);
+
+        return () => {
+            document.body.removeChild(script);
+        }
+    }, [url]);
+};
+
+function WindyEmbed() {
+    useScript("https://windy.app/widgets-code/forecast/windy_forecast_async.js?v1.4.6")
+    return (
+        <div key="windy"
+            data-windywidget="forecast"
+            data-thememode="white"
+            data-spotid="4014467"
+            data-appid="5201fb63c5989e3cda6f1eb0fdc42d8b">1
+        </div>
+    )
+}
 
 export function App() {
     // return (

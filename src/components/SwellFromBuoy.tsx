@@ -157,12 +157,10 @@ export function WaveInfo42020 (){
  * 
  */
 function convertGMTToCT(gmtString) {
-    // Add a year to the input string for correct parsing
-    const currentYear = new Date().getFullYear();
-    const gmtDateString = `${currentYear} ${gmtString} GMT`;
+    const isoDateString = new Date(gmtString).toISOString();
 
     // Parse the date string
-    const gmtDate = new Date(gmtDateString);
+    const gmtDate = new Date(isoDateString);
 
     if (!gmtDate) {
         throw new Error('Invalid date string');
@@ -194,7 +192,7 @@ function WaveInfo ({data} : {data:BouyData[]}){
 
     const requiredData: ProcessedBuoyData[] = data.slice(0, 5).map((row)=>{
         return {
-            dateTime: convertGMTToCT(`${row.MM}-${row.DD} ${row.hh}:${row.mm}`),
+            dateTime: convertGMTToCT(`${row.YY}-${row.MM}-${row.DD} ${row.hh}:${row.mm}:00.000`),
             sigWaveHeight: metersToFeet(Number(row.WVHT)),
             swellWaveHeight: metersToFeet(Number(row.SwH)),
             windWaveHeight: metersToFeet(Number(row.WWH)),

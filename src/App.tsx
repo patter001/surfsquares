@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { WaveInfo42020 } from "./components/SwellFromBuoy"
 import { WindGaugePackery, WindGaugePortA } from "./components/WindGauge";
 import { CSSProperties } from "react";
@@ -18,17 +18,61 @@ export function TvApp() {
     const packeryStyle: CSSProperties = { backgroundImage: `url(${packeryImage})`, backgroundSize: "100% 100%", backgroundRepeat: "no-repeat", backgroundPosition: "left bottom" }
     const portAStyle: CSSProperties = { backgroundImage: `url(${portAImage})`, backgroundSize: "100% 100%", backgroundRepeat: "no-repeat" };
     const waveInfoStyle: CSSProperties = { alignContent: "center", }
+    const [squareOrder, setSquares] = useState({order: [0,1,2,3]})
+    const order = squareOrder.order
+
+    const updateOrder = () => {
+        setSquares((prev)=>{
+            let newOrder = prev.order.slice(2,4)
+            newOrder.push(prev.order[0])
+            newOrder.push(prev.order[1])
+            return {order: newOrder}
+        })
+    }
+    useEffect(()=>{
+        setTimeout(updateOrder, 60*1000)
+    },[squareOrder])
+    
+
+    let squares = [
+        (
+            <div key="packery-wind" className={"FlexGrid"} style={packeryStyle}>
+            <WindGaugePackery />
+            </div>
+        ),
+        (
+            <div key="porta-wind" className={"FlexGrid"} style={portAStyle}>
+                <WindGaugePortA />
+            </div>
+        ),
+        (
+            <div key="windy"className={"FlexGrid"}><WindyEmbed/></div>
+
+        ),
+        (
+            <div key="waves" className={"FlexGrid"} style={waveInfoStyle}><WaveInfo42020 /></div>
+        )
+    ]
 
     return (
         <div style={containerSytle}>
+            {squares[order[0]]}
+            {squares[order[1]]}
+            {squares[order[2]]}
+            {squares[order[3]]}
+        </div>
+    )
+
+    return (
+        <div style={containerSytle}>
+            
             <div key="packery-wind" className={"FlexGrid"} style={packeryStyle}>
                 <WindGaugePackery />
             </div>
             <div key="porta-wind" className={"FlexGrid"} style={portAStyle}>
                 <WindGaugePortA />
             </div>
-            <div key="windy"
-                className={"FlexGrid"}>
+            <div key="windy"className={"FlexGrid"}>
                     <WindyEmbed/>
             </div>
             {/* <div className={"FlexGrid"}>

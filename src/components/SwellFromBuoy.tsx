@@ -118,29 +118,7 @@ async function fetchUrl(url){
 
 export function WaveInfo42020 (){
     const waveData = useWaveStation("42020");
-    // useEffect(()=>{
-    //     axios.get(buoy42020, {
-    //         headers: {
-    //             'Content-Type': 'text/html',
-    //             'Access-Control-Allow-Origin': '*',
-    //             'Access-Control-Allow-Methods':'GET',
-    //           },
-    //         withCredentials: false,
-    //     }).then((result)=>{
-    //         console.log(result.data)
-    //         setWaveData(result.data.data)
-    //     }).catch((error)=>{
-    //         console.log(error)
-    //     })
-    // },[])
-    // useEffect(()=>{
-    //     fetchUrl(buoy42020).then((data)=>{
-    //         console.log("Data", data)
-    //     }).catch((error)=>{
-    //         console.log("Error", error)
-    //     })
-    // }, [])
-    
+
     if(!waveData.data){
         if(waveData.isLoading){
             return(<div>Loading..</div>)
@@ -160,7 +138,7 @@ function convertGMTToCT(gmtString) {
     const isoDateString = new Date(gmtString).toISOString();
 
     // Parse the date string
-    const gmtDate = new Date(isoDateString);
+    const gmtDate = new Date(gmtString);
 
     if (!gmtDate) {
         throw new Error('Invalid date string');
@@ -181,18 +159,24 @@ function convertGMTToCT(gmtString) {
     // Extract the month, day, hour, and minute
     const month = String(ctDate.getUTCMonth() + 1).padStart(2, '0');
     const day = String(ctDate.getUTCDate()).padStart(2, '0');
-    const hours = String(ctDate.getUTCHours()).padStart(2, '0');
+    let hours = ctDate.getUTCHours()
+    let am="am"
+    if(hours>12){
+        hours=hours-12;
+        am = "pm"
+    }
+    const hoursStr = String(hours).padStart(2, ' ');
     const minutes = String(ctDate.getUTCMinutes()).padStart(2, '0');
 
     // Format the output string
-    return `${month}-${day} ${hours}:${minutes}`;
+    return `${month}-${day} ${hoursStr}:${minutes}${am}`;
 }
 
 function WaveInfo ({data} : {data:BouyData[]}){
 
     const requiredData: ProcessedBuoyData[] = data.slice(0, 5).map((row)=>{
-        const dateTime = ""
-        // const dateTime = convertGMTToCT(`${row.YY}-${row.MM}-${row.DD} ${row.hh}:${row.mm}:00.000`) 
+        //const dateTime = ""
+        const dateTime = convertGMTToCT(`${row.YY}-${row.MM}-${row.DD} ${row.hh}:${row.mm}:00.000 GMT`) 
         return {
             dateTime: dateTime,
             sigWaveHeight: metersToFeet(Number(row.WVHT)),

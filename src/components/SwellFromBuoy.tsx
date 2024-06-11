@@ -58,7 +58,9 @@ function textBlockToListOfObjects(textBlock) {
     const lines = textBlock.trim().split('\n');
 
     // Split the first line into headers
-    const headers = lines[0].split(' ').filter((a)=>a!==''); // Assuming tab-separated values
+    let header_line: string = lines[0]
+    header_line = header_line.replace("#","")
+    const headers = header_line.split(' ').filter((a)=>a!==''); // Assuming tab-separated values
 
     // Initialize an array to hold the resulting objects
     const result: BouyData[] = [];
@@ -71,8 +73,7 @@ function textBlockToListOfObjects(textBlock) {
         const obj = {};
         for (let j = 0; j < headers.length; j++) {
             obj[headers[j]] = values[j];
-        }
-        
+        }        
         // Add the object to the result array
         result.push(obj as BouyData);
     }
@@ -135,8 +136,9 @@ export function WaveInfo42020 (){
  * 
  */
 function convertGMTToCT(gmtString) {
-    const isoDateString = new Date(gmtString).toISOString();
+    //const isoDateString = new Date(gmtString).toISOString();
 
+    console.log(gmtString)
     // Parse the date string
     const gmtDate = new Date(gmtString);
 
@@ -176,7 +178,7 @@ function WaveInfo ({data} : {data:BouyData[]}){
 
     const requiredData: ProcessedBuoyData[] = data.slice(0, 5).map((row)=>{
         //const dateTime = ""
-        const dateTime = convertGMTToCT(`${row.YY}-${row.MM}-${row.DD} ${row.hh}:${row.mm}:00.000 GMT`) 
+        const dateTime = convertGMTToCT(`${row.YY}-${row.MM}-${row.DD} ${row.hh}:${row.mm}:00.000`) 
         return {
             dateTime: dateTime,
             sigWaveHeight: metersToFeet(Number(row.WVHT)),

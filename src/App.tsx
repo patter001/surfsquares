@@ -30,7 +30,7 @@ export function TvApp() {
         })
     }
     useEffect(()=>{
-        setTimeout(updateOrder, 60*1000)
+        setTimeout(updateOrder, 3*60*1000)
     },[squareOrder])
     
 

@@ -136,9 +136,7 @@ export function WaveInfo42020 (){
  * 
  */
 function convertGMTToCT(gmtString) {
-    //const isoDateString = new Date(gmtString).toISOString();
 
-    console.log(gmtString)
     // Parse the date string
     const gmtDate = new Date(gmtString);
 
@@ -152,12 +150,12 @@ function convertGMTToCT(gmtString) {
 
     // Check if Daylight Saving Time is in effect
     const isDST = (gmtDate.toLocaleString('en-US', { timeZone: 'America/Chicago', timeZoneName: 'short' }).includes('CDT'));
-    console.log("isDST", isDST)
     const offset = isDST ? cdtOffset : ctOffset;
+    //const offset = 0
 
     // Apply the offset to convert GMT to CT
     const ctDate = new Date(gmtDate.getTime() + offset * 60 * 1000);
-
+    
     // Extract the month, day, hour, and minute
     const month = String(ctDate.getUTCMonth() + 1).padStart(2, '0');
     const day = String(ctDate.getUTCDate()).padStart(2, '0');
@@ -178,7 +176,7 @@ function WaveInfo ({data} : {data:BouyData[]}){
 
     const requiredData: ProcessedBuoyData[] = data.slice(0, 5).map((row)=>{
         //const dateTime = ""
-        const dateTime = convertGMTToCT(`${row.YY}-${row.MM}-${row.DD} ${row.hh}:${row.mm}:00.000`) 
+        const dateTime = convertGMTToCT(`${row.YY}-${row.MM}-${row.DD} ${row.hh}:${row.mm}:00.000 GMT`) 
         return {
             dateTime: dateTime,
             sigWaveHeight: metersToFeet(Number(row.WVHT)),

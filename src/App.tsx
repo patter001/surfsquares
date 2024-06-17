@@ -18,26 +18,26 @@ export function TvApp() {
     const packeryStyle: CSSProperties = { backgroundImage: `url(${packeryImage})`, backgroundSize: "100% 100%", backgroundRepeat: "no-repeat", backgroundPosition: "left bottom" }
     const portAStyle: CSSProperties = { backgroundImage: `url(${portAImage})`, backgroundSize: "100% 100%", backgroundRepeat: "no-repeat" };
     const waveInfoStyle: CSSProperties = { alignContent: "center", }
-    const [squareOrder, setSquares] = useState({order: [0,1,2,3]})
+    const [squareOrder, setSquares] = useState({ order: [0, 1, 2, 3] })
     const order = squareOrder.order
 
     const updateOrder = () => {
-        setSquares((prev)=>{
-            let newOrder = prev.order.slice(2,4)
+        setSquares((prev) => {
+            let newOrder = prev.order.slice(2, 4)
             newOrder.push(prev.order[0])
             newOrder.push(prev.order[1])
-            return {order: newOrder}
+            return { order: newOrder }
         })
     }
-    useEffect(()=>{
-        setTimeout(updateOrder, 3*60*1000)
-    },[squareOrder])
-    
+    useEffect(() => {
+        setTimeout(updateOrder, 3 * 60 * 1000)
+    }, [squareOrder])
+
 
     let squares = [
         (
             <div key="packery-wind" className={"FlexGrid"} style={packeryStyle}>
-            <WindGaugePackery />
+                <WindGaugePackery />
             </div>
         ),
         (
@@ -46,7 +46,7 @@ export function TvApp() {
             </div>
         ),
         (
-            <div key="windy"className={"FlexGrid"}><WindyEmbed/></div>
+            <div key="windy" className={"FlexGrid"}><WindyEmbed /></div>
 
         ),
         (
@@ -65,15 +65,15 @@ export function TvApp() {
 
     return (
         <div style={containerSytle}>
-            
+
             <div key="packery-wind" className={"FlexGrid"} style={packeryStyle}>
                 <WindGaugePackery />
             </div>
             <div key="porta-wind" className={"FlexGrid"} style={portAStyle}>
                 <WindGaugePortA />
             </div>
-            <div key="windy"className={"FlexGrid"}>
-                    <WindyEmbed/>
+            <div key="windy" className={"FlexGrid"}>
+                <WindyEmbed />
             </div>
             {/* <div className={"FlexGrid"}>
                 <img src="https://www.ndbc.noaa.gov//spec_plot.php?station=42020"/>
@@ -124,11 +124,13 @@ export function App() {
     const packeryImage = new URL("./images/packery.jpg", import.meta.url)
     const portAImage = new URL("./images/portA.jpg", import.meta.url)
     return (
-        <QueryClientProvider client={queryClient}>
-            <div style={{ width: "100%", height: "100vh" }}>
+        <div style={{ width: "100%", height: "100vh" }}>
+            <QueryClientProvider client={queryClient}>
+
                 <TvApp />
-            </div>
-        </QueryClientProvider>
+
+            </QueryClientProvider>
+        </div>
     )
 }
 

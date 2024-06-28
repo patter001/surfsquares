@@ -155,11 +155,12 @@ function convertGMTToCT(gmtString) {
 
     // Apply the offset to convert GMT to CT
     const ctDate = new Date(gmtDate.getTime() + offset * 60 * 1000);
+    console.log(ctDate)
     
     // Extract the month, day, hour, and minute
-    const month = String(ctDate.getUTCMonth() + 1).padStart(2, '0');
-    const day = String(ctDate.getUTCDate()).padStart(2, '0');
-    let hours = ctDate.getUTCHours()
+    const month = String(ctDate.getMonth() + 1).padStart(2, '0');
+    const day = String(ctDate.getDate()).padStart(2, '0');
+    let hours = ctDate.getHours()
     let am="am"
     if(hours>12){
         hours=hours-12;
@@ -176,7 +177,7 @@ function WaveInfo ({data} : {data:BouyData[]}){
 
     const requiredData: ProcessedBuoyData[] = data.slice(0, 5).map((row)=>{
         //const dateTime = ""
-        const dateTime = convertGMTToCT(`${row.YY}-${row.MM}-${row.DD} ${row.hh}:${row.mm}:00.000 GMT`) 
+        const dateTime = convertGMTToCT(`${row.YY}-${row.MM}-${row.DD} ${row.hh}:${row.mm}:00.000`) 
         return {
             dateTime: dateTime,
             sigWaveHeight: metersToFeet(Number(row.WVHT)),

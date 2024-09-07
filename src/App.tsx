@@ -7,7 +7,15 @@ import {
     QueryClient,
     QueryClientProvider,
 } from '@tanstack/react-query';
-const queryClient = new QueryClient()
+
+const queryClient = new QueryClient({
+    defaultOptions: {
+        queries: {
+            staleTime: 10*60*1000, // 10 minutes
+        },
+    },
+})
+
 import "./App.css"
 const flexSquare = { flex: "1 0 50%", width: "50%", height: "50%", flexWrap: "wrap" }
 
@@ -21,6 +29,17 @@ export function TvApp() {
     const [squareOrder, setSquares] = useState({ order: [0, 1, 2, 3] })
     const order = squareOrder.order
 
+    let height: number;
+    let width: number;
+    if(window.visualViewport){
+        height = window.visualViewport.height
+        width = window.visualViewport.width;
+    } else {
+        height = window.innerHeight;
+        width = window.innerWidth
+    }
+    let fullScreen = height*width > (800*400)
+ 
     const updateOrder = () => {
         setSquares((prev) => {
             let newOrder = prev.order.slice(2, 4)
@@ -30,62 +49,58 @@ export function TvApp() {
         })
     }
     useEffect(() => {
-        setTimeout(updateOrder, 3 * 60 * 1000)
+        setTimeout(updateOrder, 1.5 * 60 * 1000) // 1.5 minutes
+        //setTimeout(updateOrder, 10 * 1000) // 10 seconds
     }, [squareOrder])
 
+    let squares: React.ReactElement[];
 
-    let squares = [
-        (
-            <div key="packery-wind" className={"FlexGrid"} style={packeryStyle}>
-                <WindGaugePackery />
-            </div>
-        ),
-        (
-            <div key="porta-wind" className={"FlexGrid"} style={portAStyle}>
-                <WindGaugePortA />
-            </div>
-        ),
-        (
-            <div key="windy" className={"FlexGrid"}><WindyEmbed /></div>
-
-        ),
-        (
-            <div key="waves" className={"FlexGrid"} style={waveInfoStyle}><WaveInfo42020 /></div>
-        )
-    ]
-
+    if(fullScreen){
+        squares = [
+            (
+                <div key="packery-wind" className={"FlexGrid"} style={packeryStyle}>
+                    <WindGaugePackery />
+                </div>
+            ),
+            (
+                <div key="porta-wind" className={"FlexGrid"} style={portAStyle}>
+                    <WindGaugePortA />
+                </div>
+            ),
+            (
+                <div key="windy" className={"FlexGrid"}><WindyEmbed /></div>
+    
+            ),
+            (
+                <div key="waves" className={"FlexGrid"} style={waveInfoStyle}><WaveInfo42020 count={5} /></div>
+            )
+        ]
+    } else {
+        squares = [
+            (
+                <div className={"column"}>
+                <div key="packery-wind" className={"item"} style={packeryStyle}>
+                    <WindGaugePackery />
+                </div>
+                <div key="porta-wind" className={"item"} style={portAStyle}>
+                    <WindGaugePortA />
+                </div>
+                </div>
+            ),
+            (
+                <></>
+            ),
+            (
+                <div key="waves" className={"full-height"} style={waveInfoStyle}><WaveInfo42020 count={5} /></div>
+            ),
+            (
+                <></>
+            )
+        ]       
+    }
     return (
         <div style={containerSytle}>
-            {squares[order[0]]}
-            {squares[order[1]]}
-            {squares[order[2]]}
-            {squares[order[3]]}
-        </div>
-    )
-
-    return (
-        <div style={containerSytle}>
-
-            <div key="packery-wind" className={"FlexGrid"} style={packeryStyle}>
-                <WindGaugePackery />
-            </div>
-            <div key="porta-wind" className={"FlexGrid"} style={portAStyle}>
-                <WindGaugePortA />
-            </div>
-            <div key="windy" className={"FlexGrid"}>
-                <WindyEmbed />
-            </div>
-            {/* <div className={"FlexGrid"}>
-                <img src="https://www.ndbc.noaa.gov//spec_plot.php?station=42020"/>
-            </div> */}
-            <div key="waves" className={"FlexGrid"} style={waveInfoStyle}><WaveInfo42020 /></div>
-            {/* <div
-                className={"FlexGrid"}
-                data-windywidget="map"
-                data-spotid="4014467"
-                data-appid="5201fb63c5989e3cda6f1eb0fdc42d8b"
-                data-spots="true">2
-            </div> */}
+            {order.map((m)=>squares[m])}
         </div>
     )
 }

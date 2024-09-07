@@ -2,6 +2,7 @@ import React, { CSSProperties, useState, useEffect } from "react"
 import axios from "axios"
 import { useQuery } from "@tanstack/react-query";
 import "@fortawesome/fontawesome-free/css/all.css"
+import { Space } from "antd";
 //import windImage from "../images/wind.png"
 
 // const packeryStation = "https://api.tidesandcurrents.noaa.gov/api/prod/datagetter?date=today&station=8775792&product=wind&datum=STND&time_zone=lst_ldt&units=english&format=json"
@@ -22,7 +23,8 @@ interface Wind {
     t: string; // Date time string, format example: "2023-04-09 18:06"
 }
 
-const arrowColor = "blue";
+const arrowColor = "white";
+const arrowOldColor = "red";
 
 function useWindStation(station){
     const url = `https://api.tidesandcurrents.noaa.gov/api/prod/datagetter?date=today&station=${station}&product=wind&datum=STND&time_zone=lst_ldt&units=english&format=json`
@@ -73,14 +75,14 @@ export function WindGaugePortA(){
     }
 }
 
-function WindArrow({degrees} : {degrees: string}){
-    return <i className={'fas fa-long-arrow-alt-down'} style={{fontSize: "48px", color:arrowColor, transform: `rotate(${degrees}deg)`}}/>
+function WindArrow({degrees, color, fontSize} : {degrees: string, color: string|undefined, fontSize: string}){
+    return <i className={'fas fa-long-arrow-alt-down'} style={{fontSize: fontSize, color:color, transform: `rotate(${degrees}deg)`}}/>
 }
 
 // not sure how to to type children
 function WindLabel ({children}) {
     const boxStyle: CSSProperties  = {
-        backgroundColor: "rgba(255,255,255,.3)",
+        backgroundColor: "rgba(255,255,255,.0)",
         textAlign: "center",
         color: arrowColor,
         fontSize: "40px"
@@ -106,9 +108,14 @@ function WindLabel ({children}) {
 // Displays Data from a NOAA Boy
 export function WindGauge({data} : {data: Wind[]}){
     const lastEntry = data[data.length-1]
+    const arrowFontSize = "30px"
     const speedStyle: CSSProperties = {
         color: arrowColor,
-        fontSize: "40px"
+        fontSize: arrowFontSize
+    }
+    const speedOldStyle: CSSProperties = {
+        color: arrowOldColor,
+        fontSize: speedStyle.fontSize
     }
     const updatedStyle: CSSProperties = {
         color: arrowColor,
@@ -117,16 +124,23 @@ export function WindGauge({data} : {data: Wind[]}){
     console.log(lastEntry)
     const mph = Math.round(Number(lastEntry.s)* 1.150779)
     const gusts = Math.round(Number(lastEntry.g)* 1.150779)
+    const lastDate = new Date(lastEntry.t)
+    const now = new Date();
+    now.setMinutes(now.getMinutes()-30)
+    let arrowStyle: CSSProperties
+    if (now < lastDate) {
+        arrowStyle = speedStyle
+    } else {
+        arrowStyle = speedOldStyle
+    }
+    // <span style={updatedStyle}>{lastEntry.t}</span>
     return (
         <WindLabel>
             <div>
                 <div>
-                    <span style={speedStyle}>{mph}-{gusts} mph </span><br/>
-                    <span style={updatedStyle}>{lastEntry.t}</span>
+                    <WindArrow color={arrowStyle.color} degrees={lastEntry.d} fontSize={arrowFontSize}/>
+                    <span style={{paddingLeft: "15px", ...arrowStyle}}>{mph}-{gusts} mph </span>
                 </div>
-                <div>
-                 <WindArrow degrees={lastEntry.d}/>
-                 </div>
             </div>
         </WindLabel>
     )

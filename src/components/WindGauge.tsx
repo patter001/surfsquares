@@ -126,7 +126,10 @@ export function WindGauge({data} : {data: Wind[]}){
     const gusts = Math.round(Number(lastEntry.g)* 1.150779)
     const lastDate = new Date(lastEntry.t)
     const now = new Date();
+    console.log("Last Date: ", lastDate)
+    console.log("Now: ", now);
     now.setMinutes(now.getMinutes()-30)
+    console.log("Now 20minutes ago: ", now)
     let arrowStyle: CSSProperties
     if (now < lastDate) {
         arrowStyle = speedStyle

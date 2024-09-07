@@ -38,7 +38,7 @@ export function TvApp() {
         height = window.innerHeight;
         width = window.innerWidth
     }
-    let fullScreen = height*width > (800*400)
+    let fullScreen = height*width > (900*500)
  
     const updateOrder = () => {
         setSquares((prev) => {

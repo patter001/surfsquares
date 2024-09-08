@@ -6,6 +6,7 @@ import { CSSProperties } from "react";
 import {
     QueryClient,
     QueryClientProvider,
+    useQueryClient,
 } from '@tanstack/react-query';
 
 const queryClient = new QueryClient({
@@ -28,6 +29,13 @@ export function TvApp() {
     const waveInfoStyle: CSSProperties = { alignContent: "center", }
     const [squareOrder, setSquares] = useState({ order: [0, 1, 2, 3] })
     const order = squareOrder.order
+    const client = useQueryClient()
+
+    useEffect(()=>{
+        setInterval(()=>{
+            client.getQueryCache().clear()
+        }, 10*60*1000)
+    },[queryClient])
 
     let height: number;
     let width: number;
@@ -133,11 +141,6 @@ function WindyEmbed() {
 }
 
 export function App() {
-    // return (
-    //     <MobileApp/>
-    // )
-    const packeryImage = new URL("./images/packery.jpg", import.meta.url)
-    const portAImage = new URL("./images/portA.jpg", import.meta.url)
     return (
         <div style={{ width: "100%", height: "100vh" }}>
             <QueryClientProvider client={queryClient}>

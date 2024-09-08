@@ -33,7 +33,7 @@ export function TvApp() {
 
     useEffect(()=>{
         setInterval(()=>{
-            client.getQueryCache().clear()
+            client.invalidateQueries()
         }, 10*60*1000)
     },[queryClient])
 

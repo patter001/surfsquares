@@ -1,7 +1,5 @@
 import React from "react"
 import {Table} from "antd"
-import { useQuery } from "@tanstack/react-query";
-import axios from "axios"
 import { ProcessedWaveData, useWaveStationCC, windDirectionToDegrees } from "../queries/WaveQueries";
 
 export function WaveInfo42020 ({count}:{count: number}){
@@ -76,7 +74,7 @@ function WaveInfo ({data, count} : {data: ProcessedWaveData[], count: number}){
 
     return (
     <div style={{alignContent: "center"}}>
-        <Table columns={columns} dataSource={requiredData}/>        
+        <Table columns={columns} dataSource={requiredData} pagination={false}/>        
     </div>)
 }
 

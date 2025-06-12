@@ -18,6 +18,7 @@ const queryClient = new QueryClient({
 })
 
 import "./App.css"
+import { TideChart } from "./components/TideChart";
 const flexSquare = { flex: "1 0 50%", width: "50%", height: "50%", flexWrap: "wrap" }
 
 export function TvApp() {
@@ -99,7 +100,10 @@ export function TvApp() {
                 <></>
             ),
             (
-                <div key="waves" className={"full-height"} style={waveInfoStyle}><WaveInfo42020 count={5} /></div>
+                <div className={"column"}>
+                    <div key="waves" className={"item"} style={waveInfoStyle}><WaveInfo42020 count={3} /></div>
+                    <div key="tide" className={"item"} ><TideChart/></div>
+                </div>
             ),
             (
                 <></>

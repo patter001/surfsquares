@@ -18,6 +18,7 @@ const queryClient = new QueryClient({
 })
 
 import "./App.css"
+import { TideChart } from "./components/TideChart";
 const flexSquare = { flex: "1 0 50%", width: "50%", height: "50%", flexWrap: "wrap" }
 
 export function TvApp() {
@@ -86,25 +87,50 @@ export function TvApp() {
     } else {
         squares = [
             (
-                <div className={"column"}>
-                <div key="packery-wind" className={"item"} style={packeryStyle}>
+                <div key="packery-wind" className={"FlexGrid"} style={packeryStyle}>
                     <WindGaugePackery />
                 </div>
-                <div key="porta-wind" className={"item"} style={portAStyle}>
+            ),
+            (
+                <div key="porta-wind" className={"FlexGrid"} style={portAStyle}>
                     <WindGaugePortA />
                 </div>
-                </div>
             ),
             (
-                <></>
+                <div key="windy" className={"FlexGrid"}><TideChart/></div>
             ),
             (
-                <div key="waves" className={"full-height"} style={waveInfoStyle}><WaveInfo42020 count={5} /></div>
-            ),
-            (
-                <></>
+                <div key="waves" className={"FlexGrid"} style={waveInfoStyle}><WaveInfo42020 count={5} /></div>
             )
-        ]       
+        ]        
+        // squares = [
+        //     (
+        //         <div className={"column"}>
+        //         <div key="packery-wind" className={"item"} style={packeryStyle}>
+        //             <WindGaugePackery />
+        //         </div>
+        //         <div key="porta-wind" className={"item"} style={portAStyle}>
+        //             <WindGaugePortA />
+        //         </div>
+        //         </div>
+        //     ),
+        //     (
+        //         <></>
+        //     ),
+        //     (
+        //         <div className={"column"}>
+        //             <div key="waves" className={"item"} style={waveInfoStyle}>
+        //                 <WaveInfo42020 count={2} />
+        //             </div>
+        //             <div key="tide" className={"item"} >
+        //                 <TideChart/>
+        //             </div>
+        //         </div>
+        //     ),
+        //     (
+        //         <></>
+        //     )
+        //]       
     }
     return (
         <div style={containerSytle}>

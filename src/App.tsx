@@ -101,7 +101,7 @@ export function TvApp() {
             ),
             (
                 <div className={"column"}>
-                    <div key="waves" className={"item"} style={waveInfoStyle}><WaveInfo42020 count={3} /></div>
+                    <div key="waves" className={"item"} style={waveInfoStyle}><WaveInfo42020 count={2} /></div>
                     <div key="tide" className={"item"} ><TideChart/></div>
                 </div>
             ),

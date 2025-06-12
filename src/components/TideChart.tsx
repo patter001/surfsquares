@@ -37,8 +37,8 @@ export function TideChart (props) {
     return (
         <div style={{backgroundColor: "black"}}>
             <AreaChart
-                width={760}
-                height={480}
+                width={450}
+                height={250}
                 data={swellData.data}
             >
                 <CartesianGrid strokeDasharray="3 3" />

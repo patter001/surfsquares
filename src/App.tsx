@@ -87,28 +87,50 @@ export function TvApp() {
     } else {
         squares = [
             (
-                <div className={"column"}>
-                <div key="packery-wind" className={"item"} style={packeryStyle}>
+                <div key="packery-wind" className={"FlexGrid"} style={packeryStyle}>
                     <WindGaugePackery />
                 </div>
-                <div key="porta-wind" className={"item"} style={portAStyle}>
+            ),
+            (
+                <div key="porta-wind" className={"FlexGrid"} style={portAStyle}>
                     <WindGaugePortA />
                 </div>
-                </div>
             ),
             (
-                <></>
+                <div key="windy" className={"FlexGrid"}><TideChart/></div>
             ),
             (
-                <div className={"column"}>
-                    <div key="waves" className={"item"} style={waveInfoStyle}><WaveInfo42020 count={2} /></div>
-                    <div key="tide" className={"item"} ><TideChart/></div>
-                </div>
-            ),
-            (
-                <></>
+                <div key="waves" className={"FlexGrid"} style={waveInfoStyle}><WaveInfo42020 count={5} /></div>
             )
-        ]       
+        ]        
+        // squares = [
+        //     (
+        //         <div className={"column"}>
+        //         <div key="packery-wind" className={"item"} style={packeryStyle}>
+        //             <WindGaugePackery />
+        //         </div>
+        //         <div key="porta-wind" className={"item"} style={portAStyle}>
+        //             <WindGaugePortA />
+        //         </div>
+        //         </div>
+        //     ),
+        //     (
+        //         <></>
+        //     ),
+        //     (
+        //         <div className={"column"}>
+        //             <div key="waves" className={"item"} style={waveInfoStyle}>
+        //                 <WaveInfo42020 count={2} />
+        //             </div>
+        //             <div key="tide" className={"item"} >
+        //                 <TideChart/>
+        //             </div>
+        //         </div>
+        //     ),
+        //     (
+        //         <></>
+        //     )
+        //]       
     }
     return (
         <div style={containerSytle}>

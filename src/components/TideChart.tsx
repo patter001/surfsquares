@@ -73,7 +73,7 @@ export function TideChart(props) {
             v: entry.v
         }
     })
-    let width = 399;
+    let width = 374;
     let height = 249;
     // if(containerRef.current && dimensions.width === 0){
     //     width = containerRef.current.clientWidth;
@@ -88,6 +88,7 @@ export function TideChart(props) {
                 width={width}
                 height={height}
                 data={processedData}
+                margin={{ top: 5, right: 0, left: 0, bottom: 0 }}
             >
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis

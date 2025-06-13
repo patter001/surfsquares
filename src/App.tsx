@@ -63,7 +63,7 @@ export function TvApp() {
     }, [squareOrder])
 
     let squares: React.ReactElement[];
-    // fullScreen = false
+    fullScreen = false
     if(fullScreen){
         squares = [
             (

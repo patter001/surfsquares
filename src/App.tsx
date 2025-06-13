@@ -63,7 +63,7 @@ export function TvApp() {
     }, [squareOrder])
 
     let squares: React.ReactElement[];
-
+    // fullScreen = false
     if(fullScreen){
         squares = [
             (
@@ -100,7 +100,7 @@ export function TvApp() {
                 <div key="windy" className={"FlexGrid"}><TideChart/></div>
             ),
             (
-                <div key="waves" className={"FlexGrid"} style={waveInfoStyle}><WaveInfo42020 count={5} /></div>
+                <div key="waves" className={"FlexGrid"} style={waveInfoStyle}><WaveInfo42020 count={2} /></div>
             )
         ]        
         // squares = [

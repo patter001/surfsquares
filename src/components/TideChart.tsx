@@ -73,7 +73,7 @@ export function TideChart(props) {
             v: entry.v
         }
     })
-    let width = 449;
+    let width = 399;
     let height = 249;
     // if(containerRef.current && dimensions.width === 0){
     //     width = containerRef.current.clientWidth;

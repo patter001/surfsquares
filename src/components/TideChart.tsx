@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useEffect } from "react"
+import React, { useCallback, useEffect } from "react"
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ReferenceLine } from 'recharts';
 import { useTideData } from "../queries/TideQueries";
 
@@ -30,46 +30,63 @@ type TideData = {
 export function TideChart(props) {
     const swellData = useTideData("8775870", 1);
     const containerRef = React.useRef<HTMLDivElement>(null);
-    const [dimensions, setDimensions] = React.useState({ width: 450, height: 250 });
+    const [dimensions, setDimensions] = React.useState({ width: 0, height: 0 });
+    const [observer, setObserver] = React.useState<ResizeObserver | null>(null);
+
+    const updateDimensions = useCallback((entries) => {
+        console.warn("ResizeObserver entries:", entries);
+        for (let entry of entries) {
+            setDimensions({
+                width: entry.contentRect.width,
+                height: entry.contentRect.height,
+            })
+            break
+        }
+    }, [])
+
+    useEffect(()=>{
+
+    }, [containerRef.current]);
+    // useEffect(() => {
+    //         return () => {
+    //             if (observer) {
+    //                 observer.disconnect();
+    //             }
+    //         };
+    // }, [observer]);
+    // if(containerRef.current && !observer){
+    //     const newObserver = new ResizeObserver(updateDimensions);
+    //     newObserver.observe(containerRef.current);
+    //     setObserver(newObserver);
+    // }
+    const now = new Date(new Date().toLocaleString("en-US", { timeZone: "America/Chicago" }))
+    const nowX = now.getHours() + 0.5 * Math.floor(now.getMinutes() / 30);
+
     if (!swellData.data) {
         return <div style={{ color: "white" }}>Loading...</div>;
     }
-    console.log("Swell Data:", swellData.data);
     const processedData = swellData.data.map((entry) => {
         const date = new Date(entry.t);
-        const hour = date.getHours() + date.getMinutes() / 60; // Convert to decimal hour
-        console.log("Hour:", hour);
+        const hour = date.getHours() + date.getMinutes() / 60; // Convert to decimal hour    
         return {
             hour: hour, // Convert to timestamp for better handling
             v: entry.v
         }
     })
-    useEffect(() => {
-        if (containerRef.current) {
-            const observer = new ResizeObserver((entries) => {
-                console.log("ResizeObserver entries:", entries);
-                for (let entry of entries) {
-                    setDimensions({
-                        width: entry.contentRect.width,
-                        height: entry.contentRect.height,
-                    });
-                    break
-                }
-            });
-            observer.observe(containerRef.current);
-            // Cleanup function
-            return () => {
-                observer.disconnect();
-            };
-        }
-    }, []);
-    const now = new Date(new Date().toLocaleString("en-US", { timeZone: "America/Chicago" }))
-    const nowX = now.getHours() + 0.5 * Math.floor(now.getMinutes() / 30);
+    let width = 449;
+    let height = 249;
+    // if(containerRef.current && dimensions.width === 0){
+    //     width = containerRef.current.clientWidth;
+    //     height = containerRef.current.clientHeight;
+    // } else if (dimensions.width > 0) {
+    //     width = dimensions.width;
+    //     height = dimensions.height;
+    // }
     return (
-        <div id={"tide-chart"} ref={containerRef} style={{ backgroundColor: "black", width: "100%", height: "100%" }}>
+        <div id={"tide-chart"} ref={containerRef} style={{ margin: 0, backgroundColor: "black", width: "100%", height: "100%" }}>
             <AreaChart
-                width={dimensions.width}
-                height={dimensions.height}
+                width={width}
+                height={height}
                 data={processedData}
             >
                 <CartesianGrid strokeDasharray="3 3" />

@@ -82,8 +82,13 @@ export function TideChart(props) {
     //     width = dimensions.width;
     //     height = dimensions.height;
     // }
+    // const backgroundColor = "black";
+    // const foregroundColor = "white";
+
+    const backgroundColor = "white";
+    const foregroundColor = "black";
     return (
-        <div id={"tide-chart"} ref={containerRef} style={{ margin: 0, backgroundColor: "black", width: "100%", height: "100%" }}>
+        <div id={"tide-chart"} ref={containerRef} style={{ margin: 0, backgroundColor: backgroundColor, width: "100%", height: "100%" }}>
             <AreaChart
                 width={width}
                 height={height}
@@ -95,14 +100,14 @@ export function TideChart(props) {
                     dataKey="hour"
                     domain={['auto', 'auto']}
                     interval={5}
-                    tick={{ fill: "white" }}
+                    tick={{ fill: foregroundColor }}
                     tickFormatter={(tick) => {
                         return tick % 3 === 0 ? `${tick}` : ''; // Show labels only for 3-hour intervals
                     }}
                     tickLine={false} // Remove tick lines for intervals without labels
                 />
                 <YAxis
-                    tick={{ fill: "white" }}
+                    tick={{ fill: foregroundColor }}
                 />
                 <Tooltip />
                 <Area type="monotone" dataKey="v" stroke="#8884d8" fill="#8884d8" />
@@ -110,6 +115,7 @@ export function TideChart(props) {
                     key={"currentHour"}
                     x={nowX}
                     stroke="red"
+                    strokeWidth={4}
                 />
             </AreaChart>
         </div>

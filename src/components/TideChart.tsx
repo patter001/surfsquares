@@ -28,7 +28,7 @@ type TideData = {
 
 
 export function TideChart(props) {
-    const swellData = useTideData("8775870", 1);
+    const tideData = useTideData("8775870", 1);
     const containerRef = React.useRef<HTMLDivElement>(null);
     const [dimensions, setDimensions] = React.useState({ width: 0, height: 0 });
     const [observer, setObserver] = React.useState<ResizeObserver | null>(null);
@@ -62,10 +62,10 @@ export function TideChart(props) {
     const now = new Date(new Date().toLocaleString("en-US", { timeZone: "America/Chicago" }))
     const nowX = now.getHours() + 0.5 * Math.floor(now.getMinutes() / 30);
 
-    if (!swellData.data) {
+    if (!tideData.data) {
         return <div style={{ color: "white" }}>Loading...</div>;
     }
-    const processedData = swellData.data.map((entry) => {
+    const processedData = tideData.data.map((entry) => {
         const date = new Date(entry.t);
         const hour = date.getHours() + date.getMinutes() / 60; // Convert to decimal hour    
         return {

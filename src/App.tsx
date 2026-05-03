@@ -14,8 +14,8 @@ import {
 const queryClient = new QueryClient({
     defaultOptions: {
         queries: {
-            staleTime: 10*60*1000, // 10 minutes
-            refetchInterval: 10*60*1000, // 10 minutes
+            staleTime: 10 * 60 * 1000, // 10 minutes
+            refetchInterval: 10 * 60 * 1000, // 10 minutes
         },
     },
 })
@@ -37,22 +37,22 @@ export function TvApp() {
     const order = squareOrder.order
     const client = useQueryClient()
 
-    useEffect(()=>{
-        setInterval(()=>{
+    useEffect(() => {
+        setInterval(() => {
             client.invalidateQueries()
-        }, 10*60*1000)
-    },[queryClient])
+        }, 10 * 60 * 1000)
+    }, [queryClient])
 
     let height: number;
     let width: number;
-    if(window.visualViewport){
+    if (window.visualViewport) {
         height = window.visualViewport.height
         width = window.visualViewport.width;
     } else {
         height = window.innerHeight;
         width = window.innerWidth
     }
- 
+
     const updateOrder = () => {
         setSquares((prev) => {
             let newOrder = prev.order.slice(2, 4)
@@ -67,20 +67,18 @@ export function TvApp() {
         //setTimeout(updateOrder, 10 * 1000) // 10 seconds
     }, [squareOrder])
 
-    const onFullScreenRequest = React.useCallback(()=>{
+    const onFullScreenRequest = React.useCallback((fullscreen: boolean) => {
         console.log("Full screen requested");
-        setFullScreen(true);
-    },[setFullScreen])
+        setFullScreen(fullscreen);
+    }, [setFullScreen])
 
     let squares: React.ReactElement[];
-    if(youtubeFullScreen){
-        squares = [
-            (
-                <div key="youtube" className={"FlexGrid"}>
-                    <YouTubeEmbed videoId="5s6X2045OTs" onRequestFullScreen={onFullScreenRequest}/>
-                </div>
-            ),
-       ]
+    if (youtubeFullScreen) {
+        return (
+            <div key="youtube" style={{ width: "100%", height: "100%" }}>
+                <YouTubeEmbed fullScreen={youtubeFullScreen} videoId="5s6X2045OTs" onRequestFullScreen={onFullScreenRequest} />
+            </div>
+        );
     } else {
         squares = [
             (
@@ -89,17 +87,17 @@ export function TvApp() {
                 </div>
             ),
             (
-                <div key="tide" className={"FlexGrid"}><TideChart/></div>
+                <div key="tide" className={"FlexGrid"}><TideChart /></div>
             ),
             (
                 <div key="youtube" className={"FlexGrid"}>
-                    <YouTubeEmbed videoId="5s6X2045OTs" />
+                    <YouTubeEmbed fullScreen={youtubeFullScreen} videoId="5s6X2045OTs" onRequestFullScreen={onFullScreenRequest} />
                 </div>
             ),
             (
                 <div key="waves" className={"FlexGrid"} style={waveInfoStyle}><WaveInfo42020 count={2} /></div>
             )
-        ]        
+        ]
         // squares = [
         //     (
         //         <div className={"column"}>
@@ -131,7 +129,7 @@ export function TvApp() {
     }
     return (
         <div style={containerSytle}>
-            {order.map((m)=>squares[m])}
+            {order.map((m) => squares[m])}
         </div>
     )
 }

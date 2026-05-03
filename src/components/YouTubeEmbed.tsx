@@ -5,7 +5,8 @@ export interface YouTubeEmbedProps {
   width?: string;
   height?: string;
   title?: string;
-  onRequestFullScreen?: () => void;
+  onRequestFullScreen?: (fullscreen: boolean) => void;
+  fullScreen?: boolean;
 }
 
 type YouTubeEmbedHandle = {
@@ -13,16 +14,12 @@ type YouTubeEmbedHandle = {
 };
 
 const YouTubeEmbed = forwardRef<YouTubeEmbedHandle, YouTubeEmbedProps>(
-  ({ videoId, width = '100%', height = '400', title = 'YouTube video player', onRequestFullScreen }, ref) => {
+  ({ videoId, width = '100%', height = '400', title = 'YouTube video player', onRequestFullScreen, fullScreen}, ref) => {
     const containerRef = useRef<HTMLDivElement>(null);
 
     useImperativeHandle(ref, () => ({
       requestFullScreen: () => {
-        console.log("Request layer 1?")
         if (containerRef.current) {
-          if(onRequestFullScreen){
-              onRequestFullScreen();
-          } 
           if (containerRef.current.requestFullscreen) {
             containerRef.current.requestFullscreen();
           } else if ((containerRef.current as any).webkitRequestFullscreen) {
@@ -46,6 +43,12 @@ const YouTubeEmbed = forwardRef<YouTubeEmbedHandle, YouTubeEmbedProps>(
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
           allowFullScreen
         ></iframe>
+        { onRequestFullScreen && !fullScreen && (<button onClick={() => {onRequestFullScreen && onRequestFullScreen(true);}} style={{ position: 'absolute', top: 10, right: 10, zIndex: 1 }}>
+          Full Screen
+        </button>)}
+        { onRequestFullScreen && fullScreen && (<button onClick={() => {onRequestFullScreen && onRequestFullScreen(false);}} style={{ position: 'absolute', top: 10, right: 10, zIndex: 1 }}>
+          Disable Full Screen
+        </button>)}
       </div>
     );
   }

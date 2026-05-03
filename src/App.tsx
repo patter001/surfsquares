@@ -20,6 +20,7 @@ const queryClient = new QueryClient({
 
 import "./App.css"
 import { TideChart } from "./components/TideChart";
+import YouTubeEmbed from "./components/YouTubeEmbed";
 const flexSquare = { flex: "1 0 50%", width: "50%", height: "50%", flexWrap: "wrap" }
 
 export function TvApp() {
@@ -93,13 +94,19 @@ export function TvApp() {
                 </div>
             ),
             (
-                <div key="porta-wind" className={"FlexGrid"} style={portAStyle}>
-                    <WindGaugePortA />
+                <div key="tide" className={"FlexGrid"}><TideChart/></div>
+            ),
+            // (
+            //     <div key="porta-wind" className={"FlexGrid"} style={portAStyle}>
+            //         <WindGaugePortA />
+            //     </div>
+            // ),
+            (
+                <div key="youtube" className={"FlexGrid"}>
+                    <YouTubeEmbed videoId="5s6X2045OTs" />
                 </div>
             ),
-            (
-                <div key="windy" className={"FlexGrid"}><TideChart/></div>
-            ),
+
             (
                 <div key="waves" className={"FlexGrid"} style={waveInfoStyle}><WaveInfo42020 count={2} /></div>
             )

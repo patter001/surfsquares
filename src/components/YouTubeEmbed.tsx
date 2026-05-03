@@ -5,6 +5,7 @@ export interface YouTubeEmbedProps {
   width?: string;
   height?: string;
   title?: string;
+  onRequestFullScreen?: () => void;
 }
 
 type YouTubeEmbedHandle = {
@@ -12,7 +13,7 @@ type YouTubeEmbedHandle = {
 };
 
 const YouTubeEmbed = forwardRef<YouTubeEmbedHandle, YouTubeEmbedProps>(
-  ({ videoId, width = '100%', height = '400', title = 'YouTube video player' }, ref) => {
+  ({ videoId, width = '100%', height = '400', title = 'YouTube video player', onRequestFullScreen }, ref) => {
     const containerRef = useRef<HTMLDivElement>(null);
 
     useImperativeHandle(ref, () => ({
@@ -41,6 +42,15 @@ const YouTubeEmbed = forwardRef<YouTubeEmbedHandle, YouTubeEmbedProps>(
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
           allowFullScreen
         ></iframe>
+        {onRequestFullScreen && (
+          <button
+            style={{ position: 'absolute', top: 8, right: 8, zIndex: 2 }}
+            onClick={onRequestFullScreen}
+            aria-label="Full Screen"
+          >
+            Full Screen
+          </button>
+        )}
       </div>
     );
   }

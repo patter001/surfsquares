@@ -32,6 +32,7 @@ export function TvApp() {
     const packeryStyle: CSSProperties = { backgroundImage: `url(${packeryImage})`, backgroundSize: "100% 100%", backgroundRepeat: "no-repeat", backgroundPosition: "left bottom" }
     const portAStyle: CSSProperties = { backgroundImage: `url(${portAImage})`, backgroundSize: "100% 100%", backgroundRepeat: "no-repeat" };
     const waveInfoStyle: CSSProperties = { alignContent: "center", }
+    const [youtubeFullScreen, setFullScreen] = useState(false);
     const [squareOrder, setSquares] = useState({ order: [0, 1, 2, 3] })
     const order = squareOrder.order
     const client = useQueryClient()
@@ -51,7 +52,6 @@ export function TvApp() {
         height = window.innerHeight;
         width = window.innerWidth
     }
-    let fullScreen = height*width > (900*500)
  
     const updateOrder = () => {
         setSquares((prev) => {
@@ -63,31 +63,23 @@ export function TvApp() {
     }
     useEffect(() => {
         setTimeout(updateOrder, 1.5 * 60 * 1000) // 1.5 minutes
+        setFullScreen(false);
         //setTimeout(updateOrder, 10 * 1000) // 10 seconds
     }, [squareOrder])
 
+    const onFullScreenRequest = React.useCallback(()=>{
+        setFullScreen(true);
+    },[setFullScreen])
+
     let squares: React.ReactElement[];
-    fullScreen = false
-    if(fullScreen){
+    if(youtubeFullScreen){
         squares = [
             (
-                <div key="packery-wind" className={"FlexGrid"} style={packeryStyle}>
-                    <WindGaugePackery />
+                <div key="youtube" className={"FlexGrid"}>
+                    <YouTubeEmbed videoId="5s6X2045OTs" />
                 </div>
             ),
-            (
-                <div key="porta-wind" className={"FlexGrid"} style={portAStyle}>
-                    <WindGaugePortA />
-                </div>
-            ),
-            (
-                <div key="windy" className={"FlexGrid"}><WindyEmbed /></div>
-    
-            ),
-            (
-                <div key="waves" className={"FlexGrid"} style={waveInfoStyle}><WaveInfo42020 count={5} /></div>
-            )
-        ]
+       ]
     } else {
         squares = [
             (
@@ -103,7 +95,6 @@ export function TvApp() {
                     <YouTubeEmbed videoId="5s6X2045OTs" />
                 </div>
             ),
-
             (
                 <div key="waves" className={"FlexGrid"} style={waveInfoStyle}><WaveInfo42020 count={2} /></div>
             )

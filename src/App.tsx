@@ -3,6 +3,8 @@ import { useEffect, useState } from "react";
 import { WaveInfo42020 } from "./components/SwellFromBuoy"
 import { WindGaugePackery, WindGaugePortA } from "./components/WindGauge";
 import { CSSProperties } from "react";
+import { Button } from "antd";
+import { FullscreenOutlined } from '@ant-design/icons';
 import {
     QueryClient,
     QueryClientProvider,
@@ -96,11 +98,6 @@ export function TvApp() {
             (
                 <div key="tide" className={"FlexGrid"}><TideChart/></div>
             ),
-            // (
-            //     <div key="porta-wind" className={"FlexGrid"} style={portAStyle}>
-            //         <WindGaugePortA />
-            //     </div>
-            // ),
             (
                 <div key="youtube" className={"FlexGrid"}>
                     <YouTubeEmbed videoId="5s6X2045OTs" />

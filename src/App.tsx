@@ -68,6 +68,7 @@ export function TvApp() {
     }, [squareOrder])
 
     const onFullScreenRequest = React.useCallback(()=>{
+        console.log("Full screen requested");
         setFullScreen(true);
     },[setFullScreen])
 
@@ -76,7 +77,7 @@ export function TvApp() {
         squares = [
             (
                 <div key="youtube" className={"FlexGrid"}>
-                    <YouTubeEmbed videoId="5s6X2045OTs" />
+                    <YouTubeEmbed videoId="5s6X2045OTs" onRequestFullScreen={onFullScreenRequest}/>
                 </div>
             ),
        ]

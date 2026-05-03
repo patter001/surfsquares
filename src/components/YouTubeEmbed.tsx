@@ -18,7 +18,11 @@ const YouTubeEmbed = forwardRef<YouTubeEmbedHandle, YouTubeEmbedProps>(
 
     useImperativeHandle(ref, () => ({
       requestFullScreen: () => {
+        console.log("Request layer 1?")
         if (containerRef.current) {
+          if(onRequestFullScreen){
+              onRequestFullScreen();
+          } 
           if (containerRef.current.requestFullscreen) {
             containerRef.current.requestFullscreen();
           } else if ((containerRef.current as any).webkitRequestFullscreen) {
@@ -42,15 +46,6 @@ const YouTubeEmbed = forwardRef<YouTubeEmbedHandle, YouTubeEmbedProps>(
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
           allowFullScreen
         ></iframe>
-        {onRequestFullScreen && (
-          <button
-            style={{ position: 'absolute', top: 8, right: 8, zIndex: 2 }}
-            onClick={onRequestFullScreen}
-            aria-label="Full Screen"
-          >
-            Full Screen
-          </button>
-        )}
       </div>
     );
   }

@@ -172,6 +172,7 @@ export function useWaveStation(station): UseQueryResult<ProcessedWaveData[]> {
             const converted: ProcessedWaveData[] = csv.map((row) => {
                 const dateTime = convertGMTToCT(`${row.YY}-${row.MM}-${row.DD} ${row.hh}:${row.mm}:00.000`)
                 return {
+                    key: dateTime,
                     dateTime: dateTime,
                     sigWaveHeight: metersToFeet(Number(row.WVHT)),
                     averagePeriod: Number(row.APD),

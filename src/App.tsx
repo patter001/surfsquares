@@ -62,7 +62,7 @@ export function TvApp() {
         })
     }
     useEffect(() => {
-        setTimeout(updateOrder, 1.5 * 60 * 1000) // 1.5 minutes
+        setTimeout(updateOrder, 3 * 60 * 1000) // 3 minutes
         setFullScreen(false);
         //setTimeout(updateOrder, 10 * 1000) // 10 seconds
     }, [squareOrder])

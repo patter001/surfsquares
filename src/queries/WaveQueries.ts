@@ -195,5 +195,5 @@ export function useWaveStation(station): UseQueryResult<ProcessedWaveData[]> {
 }
 
 export function useWaveStationCC() {
-    return useWaveStation("42020")
+    return useWaveStation("42092")
 }

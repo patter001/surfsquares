@@ -1,5 +1,6 @@
 import { UseQueryResult, useQuery } from "@tanstack/react-query";
 import axios from "axios";
+import { getNoaaRefetchInterval, shouldRefreshNoaaData } from "./noaaRefresh";
 
 export interface TideData {
     t: string; // time in ISO format
@@ -40,6 +41,8 @@ export function useTideData(station: string, days: number): UseQueryResult<TideD
     }
     return useQuery({
         queryKey: ["tide", station, days],
-        queryFn: query
+        queryFn: query,
+        enabled: shouldRefreshNoaaData(),
+        refetchInterval: () => getNoaaRefetchInterval(),
     })
 }

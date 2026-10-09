@@ -10,12 +10,13 @@ import {
     QueryClientProvider,
     useQueryClient,
 } from '@tanstack/react-query';
+import { getNoaaRefetchInterval, shouldRefreshNoaaData } from "./queries/noaaRefresh";
 
 const queryClient = new QueryClient({
     defaultOptions: {
         queries: {
             staleTime: 10 * 60 * 1000, // 10 minutes
-            refetchInterval: 10 * 60 * 1000, // 10 minutes
+            refetchInterval: () => getNoaaRefetchInterval(),
         },
     },
 })
@@ -38,10 +39,18 @@ export function TvApp() {
     const client = useQueryClient()
 
     useEffect(() => {
-        setInterval(() => {
+        if (!shouldRefreshNoaaData()) {
+            return;
+        }
+
+        const intervalId = window.setInterval(() => {
             client.invalidateQueries()
         }, 10 * 60 * 1000)
-    }, [queryClient])
+
+        return () => {
+            window.clearInterval(intervalId)
+        }
+    }, [client])
 
     let height: number;
     let width: number;
@@ -53,14 +62,14 @@ export function TvApp() {
         width = window.innerWidth
     }
 
-    const updateOrder = () => {
+    const updateOrder = React.useCallback(() => {
         setSquares((prev) => {
             let newOrder = prev.order.slice(2, 4)
             newOrder.push(prev.order[0])
             newOrder.push(prev.order[1])
             return { order: newOrder }
         })
-    }
+    }, [])
 
     const rotationTimeoutRef = useRef<number | null>(null);
 
@@ -74,7 +83,6 @@ export function TvApp() {
 
     useEffect(() => {
         resetRotationTimeout();
-        setFullScreen(false);
 
         return () => {
             if (rotationTimeoutRef.current !== null) {

@@ -3,6 +3,7 @@ import axios from "axios"
 import { useQuery } from "@tanstack/react-query";
 import "@fortawesome/fontawesome-free/css/all.css"
 import { Space } from "antd";
+import { getNoaaRefetchInterval, shouldRefreshNoaaData } from "../queries/noaaRefresh";
 //import windImage from "../images/wind.png"
 
 // const packeryStation = "https://api.tidesandcurrents.noaa.gov/api/prod/datagetter?date=today&station=8775792&product=wind&datum=STND&time_zone=lst_ldt&units=english&format=json"
@@ -41,7 +42,9 @@ function useWindStation(station){
     }
     return useQuery({
         queryKey: [station],
-        queryFn: query
+        queryFn: query,
+        enabled: shouldRefreshNoaaData(),
+        refetchInterval: () => getNoaaRefetchInterval(),
     })
 }
 

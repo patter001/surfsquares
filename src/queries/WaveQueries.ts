@@ -1,5 +1,6 @@
 import { UseQueryResult, useQuery } from "@tanstack/react-query";
 import axios from "axios"
+import { getNoaaRefetchInterval, shouldRefreshNoaaData } from "./noaaRefresh";
 
 // uses GitHub login not google
 const corsProxy = "https://corsproxy.io/?key=1a885157&url="
@@ -189,7 +190,9 @@ export function useWaveStation(station): UseQueryResult<ProcessedWaveData[]> {
     }
     return useQuery({
         queryKey: [station],
-        queryFn: query
+        queryFn: query,
+        enabled: shouldRefreshNoaaData(),
+        refetchInterval: () => getNoaaRefetchInterval(),
     })
 }
 

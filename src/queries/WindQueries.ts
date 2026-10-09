@@ -1,5 +1,6 @@
 import { UseQueryResult, useQuery } from "@tanstack/react-query";
 import axios from "axios";
+import { getNoaaRefetchInterval, shouldRefreshNoaaData } from "./noaaRefresh";
 
 // const packeryStation = "https://api.tidesandcurrents.noaa.gov/api/prod/datagetter?date=today&station=8775792&product=wind&datum=STND&time_zone=lst_ldt&units=english&format=json"
 // const portAStation =   "https://api.tidesandcurrents.noaa.gov/api/prod/datagetter?date=today&station=8775241&product=wind&datum=STND&time_zone=lst_ldt&units=english&format=json"
@@ -34,7 +35,9 @@ export function useWindStation(station): UseQueryResult<Wind[]>{
     }
     return useQuery({
         queryKey: [station],
-        queryFn: query
+        queryFn: query,
+        enabled: shouldRefreshNoaaData(),
+        refetchInterval: () => getNoaaRefetchInterval(),
     })
 }
 

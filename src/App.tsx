@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { WaveInfo42020 } from "./components/SwellFromBuoy"
 import { WindGaugePackery, WindGaugePortA } from "./components/WindGauge";
 import { CSSProperties } from "react";
@@ -61,16 +61,33 @@ export function TvApp() {
             return { order: newOrder }
         })
     }
+
+    const rotationTimeoutRef = useRef<number | null>(null);
+
+    const resetRotationTimeout = React.useCallback(() => {
+        if (rotationTimeoutRef.current !== null) {
+            window.clearTimeout(rotationTimeoutRef.current);
+        }
+
+        rotationTimeoutRef.current = window.setTimeout(updateOrder, 3 * 60 * 1000);
+    }, [updateOrder]);
+
     useEffect(() => {
-        setTimeout(updateOrder, 3 * 60 * 1000) // 3 minutes
+        resetRotationTimeout();
         setFullScreen(false);
-        //setTimeout(updateOrder, 10 * 1000) // 10 seconds
-    }, [squareOrder])
+
+        return () => {
+            if (rotationTimeoutRef.current !== null) {
+                window.clearTimeout(rotationTimeoutRef.current);
+            }
+        };
+    }, [squareOrder, resetRotationTimeout])
 
     const onFullScreenRequest = React.useCallback((fullscreen: boolean) => {
         console.log("Full screen requested");
+        resetRotationTimeout();
         setFullScreen(fullscreen);
-    }, [setFullScreen])
+    }, [resetRotationTimeout, setFullScreen])
 
     let squares: React.ReactElement[];
     if (youtubeFullScreen) {

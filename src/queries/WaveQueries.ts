@@ -1,10 +1,9 @@
 import { UseQueryResult, useQuery } from "@tanstack/react-query";
 import axios from "axios"
 
-const buoy42020 = "https://www.ndbc.noaa.gov/data/realtime2/42020.spec"
-const corsProxy = "https://corsproxy.io/?"
+// uses GitHub login not google
+const corsProxy = "https://corsproxy.io/?key=1a885157&url="
 // const corsProxy = "https://cors-proxy.htmldriven.com/?url="
-const buoy4020withCORS = corsProxy + buoy42020
 
 /* Example data
 #YY  MM DD hh mm WVHT  SwH  SwP  WWH  WWP SwD WWD  STEEPNESS  APD MWD
